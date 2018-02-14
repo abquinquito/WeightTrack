@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ph.edu.upd.eee.weighttrack.MainActivity">
+
+    <EditText
+        android:id="@+id/editText_datetime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/yyyy_mm_dd_hh_mm_ss"
+        android:inputType="datetime"
+        app:layout_constraintBottom_toTopOf="@+id/editText_weight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textview1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        android:layout_marginRight="16dp" />
+
+    <EditText
+        android:id="@+id/editText_weight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:hint="@string/nn_lbs"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/btn_weigh"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/editText_datetime"
+        tools:ignore="MissingConstraints"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp" />
+
+    <Button
+        android:id="@+id/btn_weigh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/weigh"
+        app:layout_constraintBottom_toTopOf="@+id/btn_getdata"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_weight"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_getdata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="@string/get_data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_weigh"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textview1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Date and Time"
+        app:layout_constraintEnd_toStartOf="@+id/editText_datetime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText,MissingConstraints"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="16dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="33dp"
+        android:text="@string/weight"
+        app:layout_constraintEnd_toStartOf="@+id/editText_weight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview1"
+        tools:ignore="MissingConstraints"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp" />
+
+</android.support.constraint.ConstraintLayout>

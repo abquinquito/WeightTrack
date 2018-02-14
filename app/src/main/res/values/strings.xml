@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WeightTrack</string>
+    <string name="nn_lbs">NN lbs</string>
+    <string name="weigh">Weigh</string>
+    <string name="yyyy_mm_dd_hh_mm_ss">yyyy-mm-dd hh:mm:ss</string>
+    <string name="get_data">Get Data</string>
+    <string name="weight">Weight</string>
+</resources>
