@@ -32,8 +32,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues input = new ContentValues();
         input.put(COL_1, timestamp);
         input.put(COL_2, weight_entry);
-        long isInserted = db.insert(TABLE_NAME, null, input);
-        return isInserted != -1;
+        if( timestamp.isEmpty() || weight_entry.isEmpty() )
+            return false;
+        else {
+            long isInserted = db.insert(TABLE_NAME, null, input);
+            return isInserted != -1;
+        }
     }
 
     Cursor getAllData() {
