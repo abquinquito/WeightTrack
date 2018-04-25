@@ -5,12 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "weight_track.db";
     private static final String TABLE_NAME = "weight_entries";
-    private static final String COL_1 = "TIMESTAMP";
-    private static final String COL_2 = "WEIGHT_ENTRY";
+    private static final String COL_1 = "DATETIME";
+    private static final String COL_2 = "WEIGHT";
 
     DatabaseHelper(Context context/*, String name, SQLiteDatabase.CursorFactory factory, int version*/) {
         super(context, DATABASE_NAME, null, 1);
@@ -27,12 +29,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    boolean insertData(String timestamp, String weight_entry){
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+    boolean insertData(String datetime, String weight){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues input = new ContentValues();
-        input.put(COL_1, timestamp);
-        input.put(COL_2, weight_entry);
-        if( timestamp.isEmpty() || weight_entry.isEmpty() )
+        input.put(COL_1, datetime);
+        input.put(COL_2, weight);
+        if( datetime.isEmpty() || weight.isEmpty() )
             return false;
         else {
             long isInserted = db.insert(TABLE_NAME, null, input);
