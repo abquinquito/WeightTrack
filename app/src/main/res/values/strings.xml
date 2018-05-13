@@ -1,8 +1,26 @@
 <resources>
-    <string name="app_name">WeightTrack</string>
+    <string-array name="spin_unit_array">
+        <item>Kilograms (kgs)</item>
+        <item>Pounds (lbs)</item>
+    </string-array>
+    <string name="app_name">WeightTrak</string>
     <string name="nn_lbs">NN lbs</string>
     <string name="weigh">Weigh</string>
     <string name="yyyy_mm_dd_hh_mm_ss">yyyy-mm-dd hh:mm:ss</string>
     <string name="get_data">Get Data</string>
     <string name="weight">Weight</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="verify_email">Verify Email</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="auto_sync">Auto Sync</string>
+    <string name="hint_datetime">Date and Time</string>
+    <string name="login">Log In</string>
+    <string name="register">Register</string>
+    <string name="username">Username</string>
+    <string name="next">Next</string>
+    <string name="agree_statement">I agree to the Terms of Service</string>
+    <string name="repassword">Re-type Password</string>
 </resources>
