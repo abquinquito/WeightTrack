@@ -36,14 +36,17 @@ public class MainActivity extends AppCompatActivity {
 
     BottomBar mBottomBar;
     private FirebaseAuth fireAuth;
+    private DatabaseReference fireDb;
     private DatabaseHelper myDb;
-
+    private String uid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         fireAuth = FirebaseAuth.getInstance();
+        uid = fireAuth.getCurrentUser().getUid();
+        fireDb = FirebaseDatabase.getInstance().getReference();
         myDb = new DatabaseHelper(this);
 
         mBottomBar = BottomBar.attach(this,savedInstanceState);
@@ -80,8 +83,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onMeasureClick(View v){
-        //weight test entry is 67
-        boolean isInserted = myDb.insertData( Calendar.getInstance().getTime().toString(), "67" );
+
+        //WEIGHT ENTRY HERE
+        String testWeight = "67";
+
+        String currentDatetime = Calendar.getInstance().getTime().toString();
+        boolean isInserted = myDb.insertData( currentDatetime, testWeight );
+        fireDb.child("user-entries").child(uid).child(currentDatetime).setValue(testWeight);
         Log.d("MainActivity","onMeasureClick:"+isInserted);
         if(isInserted)
                 Toast.makeText(MainActivity.this,"Data Inserted",Toast.LENGTH_LONG).show();
