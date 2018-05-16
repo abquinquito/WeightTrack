@@ -1,126 +1,106 @@
 package ph.edu.upd.eee.weighttrack;
 
-import android.database.Cursor;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AlertDialog;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.jjoe64.graphview.series.DataPoint;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnMenuTabClickListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-    DatabaseHelper myDb;
-    private FirebaseDatabase fireDb;
-    private EditText inputDatetime, inputWeight;
-    private Button btnWeigh, btnGetData;
-    private Switch switchAutoSync;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import ph.edu.upd.eee.weighttrack.Achievementfragment;
+import ph.edu.upd.eee.weighttrack.Devicefragment;
+import ph.edu.upd.eee.weighttrack.SettingsActivity;
+import ph.edu.upd.eee.weighttrack.Settingsfragment;
+import ph.edu.upd.eee.weighttrack.Timelinefragment;
+
+public class MainActivity extends AppCompatActivity {
+
+    BottomBar mBottomBar;
+    private FirebaseAuth fireAuth;
+    private DatabaseHelper myDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fireAuth = FirebaseAuth.getInstance();
         myDb = new DatabaseHelper(this);
-        fireDb   = FirebaseDatabase.getInstance();
-        inputDatetime = findViewById(R.id.input_datetime);
-        inputWeight   = findViewById(R.id.input_weight);
 
-        btnWeigh      = findViewById(R.id.btn_weigh);
-        btnGetData    = findViewById(R.id.btn_getdata);
-        switchAutoSync= findViewById(R.id.switch_autosync);
+        mBottomBar = BottomBar.attach(this,savedInstanceState);
+        mBottomBar.setItemsFromMenu(R.menu.menu_main, new OnMenuTabClickListener() {
+            @Override
+            public void onMenuTabSelected(int menuItemId) {
+                if(menuItemId == R.id.bottombaritemone){
+                    Timelinefragment f = new Timelinefragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,f).commit();
+                }
+                else if(menuItemId == R.id.bottombaritemtwo){
+                    Devicefragment f = new Devicefragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,f).commit();
+                }
+                else if(menuItemId == R.id.bottombaritemthree){
+                    Achievementfragment f = new Achievementfragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,f).commit();
+                }
+                else if(menuItemId == R.id.bottombaritemfour){
+                    Settingsfragment f = new Settingsfragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,f).commit();
+                }
 
-        btnWeigh.setOnClickListener(this);
-        btnGetData.setOnClickListener(this);
-        switchAutoSync.setOnCheckedChangeListener(this);
+            }
+
+            @Override
+            public void onMenuTabReSelected(int menuItemId) {
+
+            }
+
+        });
+
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
-    public void addData(String weight, String datetime ) {
-        boolean isInserted = myDb.insertData( weight, datetime );
+    public void onMeasureClick(View v){
+        //weight test entry is 67
+        boolean isInserted = myDb.insertData( Calendar.getInstance().getTime().toString(), "67" );
+        Log.d("MainActivity","onMeasureClick:"+isInserted);
         if(isInserted)
-            Toast.makeText(MainActivity.this,"Data Inserted",Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(MainActivity.this,"Data Not Inserted",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"Data Inserted",Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(MainActivity.this,"Data Not Inserted",Toast.LENGTH_LONG).show();
+
     }
 
-    public void getData() {
-        Cursor res = myDb.getAllData();
-        if(res.getCount()==0){
-            showMessage("Error","Nothing found");
-            return;
-        }
-        StringBuilder buffer = new StringBuilder();
-        while(res.moveToNext()){
-            buffer.append(res.getString(0)).append("\n").append(res.getString(1)).append("\n\n");
-        }
-        showMessage("Data", buffer.toString() );
+    public void onSettingsClick(View v){
+        Intent myIntent = new Intent(getBaseContext(),   SettingsActivity.class);
+        startActivity(myIntent);
     }
 
-    public void autoSync( boolean isChecked ) {
-        if (isChecked) {
-            Toast.makeText(getApplicationContext(), "Syncing", Toast.LENGTH_LONG).show();
-            DatabaseReference datetimeRef, weightRef;
-            Cursor res = myDb.getAllData();
-            if(res.getCount()==0){
-                Toast.makeText(getApplicationContext(), "No data found", Toast.LENGTH_LONG).show();
-                return;
-            }
-            StringBuilder buffer = new StringBuilder();
-            while(res.moveToNext()){
-                datetimeRef = fireDb.getReference("datetime");
-                datetimeRef.setValue( res.getString(0) );
-
-                weightRef = fireDb.getReference("weight");
-                weightRef.setValue( res.getString(1) );
-            }
-            Toast.makeText(getApplicationContext(), "Finished Syncing", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Syncing Off", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.btn_weigh) {
-            addData( inputWeight.getText().toString(), inputDatetime.getText().toString());
-        } else if (i == R.id.btn_getdata) {
-            getData();
-        }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        int i = buttonView.getId();
-        if(i == R.id.switch_autosync) {
-            autoSync(isChecked);
-        }
-    }
-
-    public void showMessage(String title, String message){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.show();
+    public void onSignoutClick(View v) {
+        Log.d("MainActivity","onSignoutClick");
+        fireAuth.signOut();
+        Log.d("MainActivity","onSignoutClick:successful");
+        Toast.makeText(MainActivity.this, "Signed out", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
     }
 
 }

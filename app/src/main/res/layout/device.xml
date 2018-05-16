@@ -33,23 +33,25 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/connect"
+            android:id="@+id/btn_connect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginRight="40dp"
             android:text="Connect"
-            android:fontFamily="@font/abelregular"/>
+            android:fontFamily="@font/abelregular"
+            android:onClick="onConnectClick"/>
 
         <Button
-            android:id="@+id/measure"
+            android:id="@+id/btn_measure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="Measure Weight"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:fontFamily="@font/abelregular"/>
+            android:fontFamily="@font/abelregular"
+            android:onClick="onMeasureClick"/>
 
 
     </LinearLayout>

@@ -1,12 +1,11 @@
 package ph.edu.upd.eee.weighttrack;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +24,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        Log.d("LoginActivity","created");
         setContentView(R.layout.activity_login);
 
         fireAuth = FirebaseAuth.getInstance();
@@ -37,14 +37,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnRegister.setOnClickListener(this);
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        if (fireAuth.getCurrentUser() != null) {
-//            reg3Dep.writeNewUser(fireAuth.getCurrentUser().getUid(), fireAuth.getCurrentUser().getEmail() );
-//        }
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (fireAuth.getCurrentUser() != null) {
+            Log.d("LoginActivity","currently signed in");
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        }
+        else {
+            Log.d("LoginActivity", "none currently signed in");
+        }
+
+    }
 
     public void signIn() {
         if ( !isNotEmpty(inputEmail) | !isNotEmpty(inputPassword) ) {
@@ -54,13 +59,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    Log.d("LoginActivity","signIn: Log in successful" );
                     Toast.makeText(LoginActivity.this, "Log in successful.", Toast.LENGTH_SHORT).show();
-//                    FirebaseUser user = fireAuth.getCurrentUser();
-//                    updateUI(user);
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
                     Toast.makeText(LoginActivity.this, "Log in failed.", Toast.LENGTH_LONG).show();
-//                    updateUI(null);
                 }
             }
         });

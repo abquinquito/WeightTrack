@@ -3,13 +3,11 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.example.raymundrafael.weighttrak.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
+        android:fragment="ph.edu.upd.eee.weighttrack.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="com.example.raymundrafael.weighttrak.SettingsActivity$NotificationPreferenceFragment"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:fragment="ph.edu.upd.eee.weighttrack.SettingsActivity$NotificationPreferenceFragment"
         android:title="@string/pref_header_notifications" />
 
 

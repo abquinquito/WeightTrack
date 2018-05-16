@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -88,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         inputWeight = findViewById(R.id.input_weight);
         spinUnit = findViewById(R.id.spin_unit);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.spin_unit_array, android.R.layout.simple_spinner_item);
+                R.array.pref_example_list_titles, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinUnit.setAdapter(adapter);
         btnRegister = findViewById(R.id.btn_register);
@@ -101,15 +102,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         String email = inputRegEmail.getText().toString();
         String password = inputRegPassword.getText().toString();
-
+        Log.d("RegisterActivity", email+" "+password );
         fireAuth.createUserWithEmailAndPassword(email,password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-
+                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("RegisterActivity","onComplete:"+task.isSuccessful() );
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
-                            writeNewUser(task.getResult().getUser().getUid(), task.getResult().getUser().getEmail());
+                            Log.d("RegisterActivity","onComplete: task is successful" );
+                            writeNewUser(fireAuth.getCurrentUser().getUid(), fireAuth.getCurrentUser().getEmail());
                         } else {
                             Toast.makeText(getApplicationContext(), "Registration failed.", Toast.LENGTH_SHORT).show();
                             //                updateUI(null);
@@ -119,15 +120,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void writeNewUser(String uid, String email) {
+        Log.d("RegisterActivity","writeNewUser:"+uid+" "+email );
         User userValue = new User(
                 email,
                 inputName.getText().toString(),
                 inputBirthdate.getText().toString(),
                 inputOccupation.getText().toString()
         );
-        fireDb.child(uid).setValue(userValue);
+        fireDb.child("user-info").child(uid).setValue(userValue);
 
-        fireDb.child(uid).child("weight-entries")
+        fireDb.child("user-entries").child(uid)
                 .child(Calendar.getInstance().getTime().toString())
                 .setValue(inputWeight.getText().toString());
 
@@ -135,8 +137,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 spinUnit.getSelectedItem().toString(),
                 false
         );
-        fireDb.child(uid).child("settings").setValue(settings);
-
+        fireDb.child("user-settings").child(uid).setValue(settings);
+        Log.d("RegisterActivity","writeNewUser: starting MainActivity" );
         startActivity(new Intent(RegisterActivity.this, MainActivity.class));
         finish();
     }

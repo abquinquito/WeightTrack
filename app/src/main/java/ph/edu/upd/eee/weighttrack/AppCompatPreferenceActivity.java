@@ -1,5 +1,4 @@
-package com.example.raymundrafael.weighttrak;
-
+package ph.edu.upd.eee.weighttrack;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

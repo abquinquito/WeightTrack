@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
+
+import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "weight_track.db";
@@ -20,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+TABLE_NAME+" ( "+COL_1+" DATETIME PRIMARY KEY NOT NULL, "+COL_2+" INTEGER NOT NULL )");
+        db.execSQL("CREATE TABLE "+TABLE_NAME+" ( "+COL_1+" DATETIME PRIMARY KEY NOT NULL, "+COL_2+" REAL NOT NULL )");
     }
 
     @Override
@@ -35,9 +38,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues input = new ContentValues();
         input.put(COL_1, datetime);
         input.put(COL_2, weight);
-        if( datetime.isEmpty() || weight.isEmpty() )
+        if( datetime.isEmpty() || weight.isEmpty() ) {
+            Log.d("DatabaseHelper", "insertData: argument NOT passed");
             return false;
-        else {
+        } else {
+            Log.d("DatabaseHelper", "insertData: argument passed");
             long isInserted = db.insert(TABLE_NAME, null, input);
             return isInserted != -1;
         }

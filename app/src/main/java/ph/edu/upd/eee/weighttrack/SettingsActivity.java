@@ -1,4 +1,4 @@
-package com.example.raymundrafael.weighttrak;
+package ph.edu.upd.eee.weighttrack;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -251,4 +251,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
+
+
 }

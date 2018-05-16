@@ -1,4 +1,4 @@
-package com.example.raymundrafael.weighttrak;
+package ph.edu.upd.eee.weighttrack;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -20,6 +20,5 @@ public class Settingsfragment extends Fragment {
         View v = inflater.inflate(R.layout.settings,container,false);
         return v;
     }
-
 
 }

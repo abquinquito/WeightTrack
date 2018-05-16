@@ -1,4 +1,4 @@
-package com.example.raymundrafael.weighttrak;
+package ph.edu.upd.eee.weighttrack;
 
 import android.content.Context;
 import android.content.SharedPreferences;

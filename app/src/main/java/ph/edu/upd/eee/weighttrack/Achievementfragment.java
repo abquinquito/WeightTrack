@@ -1,4 +1,4 @@
-package com.example.raymundrafael.weighttrak;
+package ph.edu.upd.eee.weighttrack;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -6,10 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-/**
- * Created by raymundrafael on 30/04/2018.
- */
 
 public class Achievementfragment extends Fragment {
 
